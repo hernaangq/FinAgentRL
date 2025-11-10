@@ -1,7 +1,7 @@
 # Risk-Adjusted FinRL
-
-Hernan Garcia Quijano
-Alberto Mateo Muñoz
+Authors: 
+- Hernan Garcia Quijano
+- Alberto Mateo Muñoz
 
 ## Overview
 
@@ -35,6 +35,8 @@ Dependencies include:
 - `custom_env.py` - Simple single-stock environment (legacy)
 
 ### Training & Testing
+- `ppo_train_mag7.py` - **Professional PPO training script with full tracking**
+- `evaluate_mag7.py` - **Comprehensive model evaluation with detailed metrics**
 - `train_mag7.py` - Training script with random and buy-hold strategies
 - `test_mag7.py` - Comprehensive environment validation tests
 - `train.py` - Simple training for legacy environment
@@ -69,7 +71,50 @@ This demonstrates:
 - Buy-and-hold strategy for comparison
 - Portfolio performance metrics
 
-### 3. Explore the Data
+### 3. Train a PPO Agent (Professional Setup)
+
+```bash
+python ppo_train_mag7.py 100000
+```
+
+This will:
+- Train a PPO agent for 100,000 timesteps
+- Save models to `./Traceability/` with timestamps
+- Log training to TensorBoard
+- Evaluate periodically and save best model
+- Generate comprehensive training summary
+
+Arguments:
+- `<total_timesteps>`: Number of training steps (required)
+- Use `--help` for more information
+
+### 4. Evaluate a Trained Model
+
+```bash
+python evaluate_mag7.py PPO ./Traceability/.../BestModel/best_model.zip 10
+```
+
+This will:
+- Evaluate the model over 10 episodes
+- Calculate win rate, returns, Sharpe ratio
+- Show detailed performance metrics
+- Optionally save results to JSON
+
+Arguments:
+- `<policy>`: PPO, SAC, or A2C
+- `<model_path>`: Path to the .zip model file
+- `<n_eval_episodes>`: Number of evaluation episodes
+- `--verbose`: Show detailed output
+- `--save-results <file.json>`: Save results
+- `--deterministic`: Use deterministic policy
+
+### 5. Monitor Training with TensorBoard
+
+```bash
+tensorboard --logdir=./Traceability/
+```
+
+### 6. Explore the Data
 
 ```bash
 python data_utils.py
@@ -102,23 +147,7 @@ This will:
 
 **Episode**: One complete pass through the historical data (~252 trading days for 1 year)
 
-## Next Steps
 
-To train a real RL agent, you can integrate algorithms like:
-
-1. **DQN** (Deep Q-Network) - For discrete action spaces
-2. **PPO** (Proximal Policy Optimization) - Popular choice for continuous control
-3. **A2C/A3C** (Advantage Actor-Critic) - Good for financial applications
-4. **SAC** (Soft Actor-Critic) - For exploration in trading
-
-Example using Stable-Baselines3:
-```python
-from stable_baselines3 import PPO
-from mag7_env import Mag7TradingEnv
-
-env = Mag7TradingEnv(initial_cash=10000, lookback_period="1y")
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=100000)
 ```
 
 ## Configuration Options
@@ -133,10 +162,5 @@ env = Mag7TradingEnv(
 )
 ```
 
-## Performance Baseline
 
-The random agent typically achieves ~0% return (expected).
-The buy-and-hold strategy provides a realistic benchmark based on Mag7 actual performance.
-
-Your RL agent should aim to beat buy-and-hold! 🚀
 

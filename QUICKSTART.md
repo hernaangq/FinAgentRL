@@ -57,93 +57,39 @@ python train_mag7.py
 python data_utils.py
 ```
 
-## Training a Real RL Agent
-
-### Option 1: Stable-Baselines3 (Recommended)
+### 4. Train a Professional PPO Agent
 ```bash
-pip install stable-baselines3[extra]
+python ppo_train_mag7.py 100000
 ```
 
-```python
-from stable_baselines3 import PPO
-from mag7_env import Mag7TradingEnv
+This will train for 100,000 timesteps and create a complete traceability folder with:
+- TensorBoard logs
+- Best model checkpoints
+- Training summary
+- Monitor CSV files
 
-env = Mag7TradingEnv(initial_cash=10000, lookback_period="1y")
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=100000)
-model.save("mag7_trader")
+### 5. Visualize Training Results
+```bash
+python plot_results.py Traceability/PPO_model_Mag7_*/Test/*.monitor.csv
 ```
 
-### Option 2: Custom Algorithm
-```python
-from mag7_env import Mag7TradingEnv
-import numpy as np
+This will generate plots showing:
+- Episode rewards over time
+- Episode length over time
+- Reward vs episode length scatter
+- Smoothed reward trends
 
-env = Mag7TradingEnv()
-obs, info = env.reset()
-
-for episode in range(100):
-    done = False
-    while not done:
-        # Your algorithm here
-        action = your_policy(obs)  
-        obs, reward, terminated, truncated, info = env.step(action)
-        done = terminated or truncated
+### 6. Evaluate Trained Model
+```bash
+python evaluate_mag7.py PPO Traceability/PPO_model_Mag7_*/BestModel/best_model.zip 20 --verbose
 ```
 
-## Performance Benchmarks
+This provides comprehensive evaluation with:
+- Win rate and profitability metrics
+- Average returns and Sharpe ratio
+- Detailed episode breakdowns
+- Save results to JSON with `--save-results results.json`
 
-From the test run:
-- **Random Agent**: ~15% average return (lucky!)
-- **Buy-and-Hold**: ~4% return (1-year period)
-- **Your RL Agent**: Should beat buy-and-hold! 🎯
-
-## Customization Options
-
-### Change Training Period
-```python
-env = Mag7TradingEnv(
-    lookback_period="2y"  # or "6mo", "3mo", etc.
-)
-```
-
-### Change Initial Capital
-```python
-env = Mag7TradingEnv(
-    initial_cash=100000  # Start with $100k
-)
-```
-
-### Enable Visual Output
-```python
-env = Mag7TradingEnv(
-    render_mode="human"  # Print detailed info each step
-)
-```
-
-## Next Steps for Your Project
-
-1. **Data Enhancement**
-   - Add technical indicators (RSI, MACD, Moving Averages)
-   - Include volume data
-   - Add market sentiment features
-
-2. **Environment Improvements**
-   - Transaction costs
-   - Portfolio constraints (max % per stock)
-   - Short selling
-   - Position sizing (buy/sell multiple shares)
-
-3. **Training Optimization**
-   - Hyperparameter tuning
-   - Multiple episodes with different time periods
-   - Train/validation/test split
-
-4. **Evaluation Metrics**
-   - Sharpe Ratio
-   - Maximum Drawdown
-   - Win Rate
-   - Risk-adjusted returns
 
 ## File Structure
 
@@ -151,12 +97,16 @@ env = Mag7TradingEnv(
 RA-FinRL/
 ├── README.md                    # Project overview
 ├── QUICKSTART.md               # This file
+├── TRAINING_GUIDE.md           # Professional training workflow guide
 ├── requirements.txt            # Dependencies
-├── mag7_env.py                 # Main environment
-├── train_mag7.py              # Training script
-├── test_mag7.py               # Test suite
+├── mag7_env.py                 # Main multi-stock environment
+├── ppo_train_mag7.py          # Professional PPO training script
+├── evaluate_mag7.py           # Comprehensive model evaluation
+├── plot_results.py            # Training results visualization
+├── train_mag7.py              # Baseline strategies demo
+├── test_mag7.py               # Environment test suite
 ├── data_utils.py              # Data download utilities
-├── sb3_integration.py         # SB3 example
+├── sb3_integration.py         # SB3 integration example
 ├── custom_env.py              # Legacy single-stock env
 ├── train.py                   # Legacy training
 └── test_env.py                # Legacy tests
@@ -174,15 +124,7 @@ pip install yfinance
 pip install gymnasium
 ```
 
-### Data download fails
-- Check internet connection
-- Try a shorter period: `lookback_period="6mo"`
-- Data is cached, so subsequent runs are faster
 
-### Environment runs too slow
-- Use shorter lookback period
-- Reduce number of episodes
-- Consider using vectorized environments
 
 ## Resources
 
@@ -191,12 +133,3 @@ pip install gymnasium
 - **yfinance**: https://github.com/ranaroussi/yfinance
 - **FinRL**: https://github.com/AI4Finance-Foundation/FinRL
 
-## Tips for Better Results
-
-1. **Start Simple**: Train on shorter periods first
-2. **Monitor Learning**: Use tensorboard to track training
-3. **Compare Baselines**: Always compare to buy-and-hold
-4. **Risk Management**: Consider adding constraints
-5. **Diversification**: The environment already encourages this!
-
-Good luck training your RL agent! 🚀📈
