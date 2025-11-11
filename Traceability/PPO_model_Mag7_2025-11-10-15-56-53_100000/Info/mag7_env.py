@@ -160,14 +160,19 @@ class Mag7TradingEnv(gym.Env):
             self._render_frame()
         
         return observation, info
-
-    def _do_action(self, action, current_prices):
-        """Helper function to execute actions."""
+    
+    def step(self, action):
+        """
+        Execute one time step within the environment.
+        
+        Args:
+            action: Array of actions for each stock [0=sell, 1=hold, 2=buy]
+        """
+        current_prices = self._get_current_prices()
+        
         # Convert action encoding: 0->sell, 1->hold, 2->buy
         # To: -1->sell, 0->hold, 1->buy
         action_decoded = action - 1
-        
-        current_prices = self._get_current_prices()
         
         # Execute actions for each stock
         for i, act in enumerate(action_decoded):
@@ -180,31 +185,17 @@ class Mag7TradingEnv(gym.Env):
                     self.holdings[i] -= 1
                     self.cash += current_prices[i]
             # act == 0 is hold, do nothing
-
-    def _compute_reward(self, new_portfolio_value, prev_portfolio_value):
-        """Compute the final reward."""
-        reward = new_portfolio_value - prev_portfolio_value
-        return reward 
-
-    def step(self, action):
-        """
-        Execute one time step within the environment.
         
-        Args:
-            action: Array of actions for each stock [0=sell, 1=hold, 2=buy]
-        """
-        current_prices = self._get_current_prices()
-        
-        self._do_action(action, current_prices)
-
         # Store previous portfolio value for reward calculation
         prev_portfolio_value = self._get_portfolio_value()
+        
         # Move to next step
         self.current_step += 1
+        
         # Calculate new portfolio value and reward
         new_portfolio_value = self._get_portfolio_value()
-        reward = self._compute_reward(new_portfolio_value, prev_portfolio_value)
-
+        reward = new_portfolio_value - prev_portfolio_value
+        
         # Check if episode is done
         terminated = self.current_step >= self.max_steps
         truncated = False
