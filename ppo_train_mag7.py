@@ -49,7 +49,7 @@ pi = [512, 512, 256]
 vf = [512, 512, 256]
 
 # PPO Hyperparameters - TUNED FOR FINANCIAL RL
-learning_rate = 3e-4          # Standard learning rate
+learning_rate = 0.001          # Standard learning rate
 n_steps = 2048                # Steps per update (about 8 trading days)
 batch_size = 128              # Larger batch for stability
 n_epochs = 10                 # Epochs per update
@@ -160,13 +160,7 @@ os.makedirs(network_dir, exist_ok=True)
 print("\n" + "="*80)
 print(f"STARTING TRAINING - {total_timesteps:,} timesteps")
 print("="*80)
-print("\nKEY IMPROVEMENTS:")
-print("  ✓ Better action space (10% trades instead of 1 share)")
-print("  ✓ Improved observations (returns, portfolio %, etc.)")
-print("  ✓ Stronger reward signal (scaled, percentage-based)")
-print("  ✓ High entropy (0.05) for exploration")
-print("  ✓ Transaction costs included")
-print("="*80)
+
 
 start_time = time.time()
 model.learn(total_timesteps=total_timesteps, progress_bar=True, **kwargs)

@@ -173,8 +173,8 @@ class Mag7TradingEnv(gym.Env):
         Execute trading actions with improved action space.
         
         Action interpretation:
-        - 0: Sell 10% of holdings for that stock
-        - 1: Hold (do nothing)
+        - 1: Sell 10% of holdings for that stock
+        - 0: Hold (do nothing)
         - 2: Buy stock with 10% of available cash
         """
         total_cost = 0.0
@@ -197,7 +197,7 @@ class Mag7TradingEnv(gym.Env):
                         self.cash -= total_needed
                         total_cost += transaction_fee
                     
-            elif action_type == 0:  # Sell 10% of holdings
+            elif action_type == 1:  # Sell 10% of holdings
                 shares_to_sell = int(self.holdings[i] * 0.1)
                 
                 if shares_to_sell > 0:
@@ -208,7 +208,7 @@ class Mag7TradingEnv(gym.Env):
                     self.cash += revenue - transaction_fee
                     total_cost += transaction_fee
             
-            # action_type == 1 is Hold (do nothing)
+            # action_type == 0 is Hold (do nothing)
         
         return total_cost
     
@@ -237,7 +237,7 @@ class Mag7TradingEnv(gym.Env):
             cash_penalty = (cash_ratio - 0.5) * 0.1
         
         # Final reward
-        reward = portfolio_return_pct - cost_penalty - cash_penalty
+        reward = 50 * portfolio_return_pct - cost_penalty - cash_penalty
         
         # Scale reward for better learning
         reward *= 100
