@@ -1,0 +1,21 @@
+================================================================================
+IMPROVED PPO TRAINING - MAG7 TRADING
+================================================================================
+
+ENVIRONMENT:
+  Initial Cash: $10,000
+  Data Period: 5y
+  Trading Days: 1256
+  Action Space: Buy/Hold/Sell 10% per stock
+  Transaction Cost: 0.1%
+
+NETWORK:
+  Policy: [512, 512, 256]
+  Value: [512, 512, 256]
+
+PPO HYPERPARAMETERS:
+  Learning rate: 0.001
+  Entropy coef: 0.05
+  Total timesteps: 100,000
+  Training time: 591.45s
+================================================================================

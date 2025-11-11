@@ -284,7 +284,7 @@ def run_detailed_episodes(model, env, n_episodes: int, deterministic: bool, verb
         
         while not done:
             action, _states = model.predict(obs, deterministic=deterministic)
-            print(f"Action taken: {action}")
+            #print(f"Action taken: {action}")
             obs, reward, terminated, truncated, info = env.step(action)
             episode_reward += reward
             episode_length += 1

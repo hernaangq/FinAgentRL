@@ -62,7 +62,7 @@ max_grad_norm = 0.5           # Gradient clipping
 
 # Environment parameters
 initial_cash = 10000
-lookback_period = "1y"
+lookback_period = "5y"
 max_shares_per_trade = 10
 transaction_cost_pct = 0.001  # 0.1% transaction cost
 
