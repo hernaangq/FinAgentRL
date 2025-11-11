@@ -55,7 +55,7 @@ vf = [256, 256, 256]
 # These parameters can be tuned to improve the performance of the PPO agent
 # For more information on these parameters, refer to the Stable Baselines3 documentation
 # (see https://stable-baselines3.readthedocs.io/en/master/modules/ppo.html#parameters)
-learning_rate = 0.0003    # learning_rate: The learning rate for the optimizer
+learning_rate = 0.001    # learning_rate: The learning rate for the optimizer
 n_steps = 2048            # n_steps: Number of steps to run for each environment per update
 batch_size = 64           # batch_size: Minibatch size
 n_epochs = 10             # n_epochs: Number of epoch when optimizing the surrogate loss
