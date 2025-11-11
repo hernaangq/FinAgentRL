@@ -1,4 +1,4 @@
-# Risk-Adjusted FinRL
+# FinAgentRL
 Authors: 
 - Hernan Garcia Quijano
 - Alberto Mateo Muñoz
