@@ -49,7 +49,7 @@ pi = [512, 512, 256]
 vf = [512, 512, 256]
 
 # PPO Hyperparameters - TUNED FOR FINANCIAL RL
-learning_rate = 0.001          # Standard learning rate
+learning_rate = 0.0003          # Standard learning rate
 n_steps = 2048                # Steps per update (about 8 trading days)
 batch_size = 128              # Larger batch for stability
 n_epochs = 10                 # Epochs per update
@@ -62,7 +62,7 @@ max_grad_norm = 0.5           # Gradient clipping
 
 # Environment parameters
 initial_cash = 10000
-lookback_period = "10y"
+lookback_period = "5y"
 max_shares_per_trade = 10
 transaction_cost_pct = 0.001  # 0.1% transaction cost
 
